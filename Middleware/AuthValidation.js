@@ -1,36 +1,31 @@
-const joi = require ("joi");
-const authRouter = require('./Routes/AuthRouter');
+const Joi = require('joi');
 
-const SignupValidation = (req,res,next)=> {
-    const schema = joi.object({
-        name: joi.string().min(3).max(100).required(),
-        email: joi.string().min().required(),
-        password: joi.string().min(4).max(100).required()
+const signupValidation = (req, res, next) => {
+    const schema = Joi.object({
+        name: Joi.string().min(3).max(100).required(),
+        email: Joi.string().email().required(),
+        password: Joi.string().min(4).max(100).required()
     });
-
-const {error} = schema.validate(req.body);
-if(error){
-    return res.status(400)
-        .json({message: "Bad request", error})
-}
+    const { error } = schema.validate(req.body);
+    if (error) {
+        return res.status(400)
+            .json({ message: "Bad request", error })
+    }
     next();
 }
-
-const loginValidation = (req,res,next)=> {
-    const schema = joi.object({
-        
-        email: joi.string().min().required(),
-        password: joi.string().min(4).max(100).required()
+const loginValidation = (req, res, next) => {
+    const schema = Joi.object({
+        email: Joi.string().email().required(),
+        password: Joi.string().min(4).max(100).required()
     });
-
-const {error} = schema.validate(req.body);
-if(error){
-    return res.status(400)
-        .json({message: "Bad request", error})
-}
+    const { error } = schema.validate(req.body);
+    if (error) {
+        return res.status(400)
+            .json({ message: "Bad request", error })
+    }
     next();
 }
-module.exports={
-    SignupValidation,
+module.exports = {
+    signupValidation,
     loginValidation
 };
